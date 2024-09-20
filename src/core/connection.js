@@ -12,8 +12,11 @@ export async function startConnection() {
   });
 
   conn.ev.on('connection.update', update => {
+    console.log('Estado de la conexión:', update);  // Agregar depuración
     if (update.connection === 'open') {
       console.log('🟢 Conexión establecida a Admin-TK');
+    } else if (update.connection === 'close') {
+      console.log('🔴 Conexión cerrada');
     }
   });
 
