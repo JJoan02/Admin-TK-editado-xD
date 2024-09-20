@@ -1,5 +1,4 @@
-// Importar todo el paquete como un objeto y extraer 'say'
-import pkg from 'cfonts';
+import pkg from 'cfonts'; // Importar todo el paquete
 const { say } = pkg;  // Extraer el método 'say'
 
 export function displayHeader() {
@@ -23,3 +22,4 @@ export function displayHeader() {
 export function startBot() {
   console.log('Bot Admin-TK iniciado correctamente');
 }
+
