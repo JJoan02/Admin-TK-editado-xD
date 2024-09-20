@@ -4,10 +4,17 @@ import { setupMaster, fork } from 'cluster';
 import { watchFile, unwatchFile } from 'fs';
 import { createInterface } from 'readline';
 import yargs from 'yargs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Definir __dirname para ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const { say } = pkg;  // Extraer el método 'say'
 const rl = createInterface(process.stdin, process.stdout);
 
+// Asegúrate de exportar la función displayHeader
 export function displayHeader() {
   say('Admin-TK', {
     font: 'block',
@@ -31,6 +38,7 @@ var isRunning = false;
 export function start(file) {  // Asegúrate de exportar la función 'start'
   if (isRunning) return;
   isRunning = true;
+  
   let args = [join(__dirname, file), ...process.argv.slice(2)];
   say([process.argv[0], ...args].join(' '), {
     font: 'console',
@@ -70,7 +78,7 @@ export function start(file) {  // Asegúrate de exportar la función 'start'
   });
 
   let opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
-  
+
   if (!opts['test']) {
     if (!rl.listenerCount()) rl.on('line', line => {
       p.emit('message', line.trim());
@@ -84,6 +92,4 @@ process.on('warning', (warning) => {
     console.warn(warning.stack);
   }
 });
-
-// Puedes llamar directamente a la función 'start' desde 'index.js'
 
