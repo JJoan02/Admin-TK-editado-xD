@@ -195,7 +195,6 @@ if (!fs.existsSync(`./${authFile}/creds.json`)) {
       setTimeout(async () => {
         let codigo = await conn.requestPairingCode(numeroTelefono)
         codigo = codigo?.match(/.{1,4}/g)?.join("-") || codigo
-        console.log(chalk.black(ch
         console.log(chalk.black(chalk.bgGreen(`\nCódigo de emparejamiento: ${codigo}`)));
         console.log(chalk.black(chalk.bgYellow('Por favor, escanee el código QR con su WhatsApp.')));
       }, 1000);
