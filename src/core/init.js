@@ -19,5 +19,5 @@ export function displayHeader() {
 }
 
 export function startBot() {
-  console.log('Admin-TK iniciado correctamente');
+  console.log('Bot Admin-TK iniciado correctamente');
 }
