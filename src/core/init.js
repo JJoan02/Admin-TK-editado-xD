@@ -1,4 +1,6 @@
-import { say } from 'cfonts';
+// Importar todo el paquete como un objeto y extraer 'say'
+import pkg from 'cfonts';
+const { say } = pkg;  // Extraer el método 'say'
 
 export function displayHeader() {
   say('Admin-TK', {
