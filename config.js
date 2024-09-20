@@ -1,74 +1,109 @@
-import { watchFile, unwatchFile } from 'fs' 
-import chalk from 'chalk'
-import { fileURLToPath } from 'url'
-import fs from 'fs'
-import cheerio from 'cheerio'
-import fetch from 'node-fetch'
-import axios from 'axios'
-import moment from 'moment-timezone' 
+import { watchFile, unwatchFile } from 'fs';
+import chalk from 'chalk';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import cheerio from 'cheerio';
+import fetch from 'node-fetch';
+import axios from 'axios';
+import moment from 'moment-timezone';
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+// *───────────────────────────*
+// *       PROPIETARIOS        *
+// *───────────────────────────*
 
 global.owner = [
-   ['50557865603', 'Niño Piña 💛', true],
-   ['50557865603', 'Crow Bot', true],
+   ['51987654321', 'JoanTK 👑', true],
+   ['51987654322', 'Admin-TK', true],
 ]
-
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.mods = []
 global.prems = []
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+// *───────────────────────────*
+// *       INFORMACIÓN         *
+// *───────────────────────────*
 
-global.packname = '⪛✰ 𝗖𝗿𝗼𝘄 𝗕𝗼𝘁 - 𝗠𝗗 ✰⪜'
-global.botname = '𝗖𝗿𝗼𝘄 𝗕𝗼𝘁 - 𝗠𝗗'
-global.wm = '𝗡𝗶𝗻̃𝗼 𝗽𝗶𝗻̃𝗮 𝗯𝗼𝘁 - 𝗠𝗗'
-global.author = '𝗡𝗶𝗻̃𝗼 𝗽𝗶𝗻̃𝗮'
-global.dev = '𝗧𝗵𝗲𝗖𝗿𝗼𝘄𝗕𝗼𝘁'
-global.textbot = '𝗖𝗿𝗼𝘄 𝗯𝗼𝘁 : 𝗡𝗶𝗻̃𝗼 𝗽𝗶𝗻̃𝗮'
-global.vs = '1.1.3'
+global.packname = '⪛✰ 𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁 - 𝗠𝗗 ✰⪜'
+global.botname = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 - 𝗠𝗗'
+global.wm = '𝗝𝗼𝗮𝗻𝗧𝗞 𝗕𝗼𝘁 - 𝗠𝗗'
+global.author = '𝗝𝗼𝗮𝗻𝗧𝗞'
+global.dev = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁'
+global.textbot = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁 : 𝗝𝗼𝗮𝗻𝗧𝗞'
+global.vs = '1.0.0'
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+// *───────────────────────────*
+// *         MULTIMEDIA        *
+// *───────────────────────────*
 
-global.imagen1 = fs.readFileSync('./Menu.jpg')
-global.fantasyVid = ['./media/menus/Menuvid1.mp4', './media/menus/Menuvid2.mp4', './media/menus/Menuvid3.mp4']
-global.imagen2 = fs.readFileSync('./Menu2.jpg')
-global.imagen3 = fs.readFileSync('./Menu3.jpg')
-global.welcome = fs.readFileSync('./media/welcome.jpg')
-global.adios = fs.readFileSync('./media/adios.jpg')
-global.catalogo = fs.readFileSync('./storage/img/catalogo1.jpg')
-global.ianurl = fs.readFileSync('./storage/img/crowurl.jpg')
+global.imagen1 = fs.readFileSync('./media/AdminTK1.jpg');
+global.imagen2 = fs.readFileSync('./media/AdminTK2.jpg');
+global.imagen3 = fs.readFileSync('./media/AdminTK3.jpg');
+global.welcome = fs.readFileSync('./media/welcomeTK.jpg');
+global.adios = fs.readFileSync('./media/adiosTK.jpg');
+global.catalogo = fs.readFileSync('./media/catalogoTK.jpg');
+global.banner = fs.readFileSync('./media/bannerTK.jpg');
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+global.fantasyVid = [
+  './media/menus/Menuvid1.mp4',
+  './media/menus/Menuvid2.mp4',
+  './media/menus/Menuvid3.mp4'
+];
 
-global.grupo = 'https://chat.whatsapp.com/Cvqmah5sZSzLFIjXn75Ple'
-global.grupo2 = 'https://chat.whatsapp.com/Cvqmah5sZSzLFIjXn75Ple'
-global.grupo3 = 'https://chat.whatsapp.com/Cvqmah5sZSzLFIjXn75Ple'
-global.channel = 'https://whatsapp.com/channel/0029VajkZ6bIXnlwPZmbuH1u'
+// *───────────────────────────*
+// *        ENLACES GRUPOS     *
+// *───────────────────────────*
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+global.grupo = 'https://chat.whatsapp.com/GrupoAdminTK1';
+global.grupo2 = 'https://chat.whatsapp.com/GrupoAdminTK2';
+global.channel = 'https://whatsapp.com/channel/0029VaJoanTKChannel';
 
-global.estilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "543876577197-120363317332020195@g.us" } : {}) }, message: { orderMessage: { itemCount : -999999, status: 1, surface : 1, message: '𝗧𝗵𝗲𝗖𝗿𝗼𝘄𝗕𝗼𝘁 💛', orderTitle: 'Bang', thumbnail: catalogo, sellerJid: '0@s.whatsapp.net'}}}
+// *───────────────────────────*
+// *     ESTILO DE MENSAJE     *
+// *───────────────────────────*
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+global.estilo = { 
+    key: {  
+        fromMe: false, 
+        participant: `0@s.whatsapp.net`, 
+        ...(false ? { remoteJid: "1234567890-1234567890@g.us" } : {}) 
+    }, 
+    message: { 
+        orderMessage: { 
+            itemCount: -999999, 
+            status: 1, 
+            surface: 1, 
+            message: '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁 💼', 
+            orderTitle: 'Menu Admin-TK', 
+            thumbnail: catalogo, 
+            sellerJid: '0@s.whatsapp.net'
+        }
+    }
+};
 
-global.cheerio = cheerio
-global.fs = fs
-global.fetch = fetch
-global.axios = axios
-global.moment = moment        
+// *───────────────────────────*
+// *      HERRAMIENTAS         *
+// *───────────────────────────*
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+global.cheerio = cheerio;
+global.fs = fs;
+global.fetch = fetch;
+global.axios = axios;
+global.moment = moment;
 
-global.multiplier = 69 
-global.maxwarn = '2' // máxima advertencias
+// *───────────────────────────*
+// *       VARIABLES GLOBALES  *
+// *───────────────────────────*
 
-//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+global.multiplier = 50; // Puedes cambiar el valor del multiplicador según tus necesidades
+global.maxwarn = '3'; // Máximas advertencias permitidas antes de sancionar
 
-let file = fileURLToPath(import.meta.url)
+// *───────────────────────────*
+// *  ACTUALIZACIÓN AUTOMÁTICA *
+// *───────────────────────────*
+
+let file = fileURLToPath(import.meta.url);
 watchFile(file, () => {
-  unwatchFile(file)
-  console.log(chalk.redBright("Update 'config.js'"))
-  import(`${file}?update=${Date.now()}`)
-})
+  unwatchFile(file);
+  console.log(chalk.redBright("Update 'config.js' para Admin-TK"));
+  import(`${file}?update=${Date.now()}`);
+});
