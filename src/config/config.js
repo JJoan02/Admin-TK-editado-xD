@@ -90,13 +90,6 @@ global.axios = axios;
 global.moment = moment;
 
 // *───────────────────────────*
-// *       VARIABLES GLOBALES  *
-// *───────────────────────────*
-
-global.multiplier = 50; // Puedes cambiar el valor del multiplicador según tus necesidades
-global.maxwarn = '3'; // Máximas advertencias permitidas antes de sancionar
-
-// *───────────────────────────*
 // *  ACTUALIZACIÓN AUTOMÁTICA *
 // *───────────────────────────*
 
