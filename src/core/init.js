@@ -4,8 +4,8 @@ import { setupMaster, fork } from 'cluster';
 import { watchFile, unwatchFile } from 'fs';
 import { createInterface } from 'readline';
 import yargs from 'yargs';
-const { say } = pkg;  // Extraer el método 'say'
 
+const { say } = pkg;  // Extraer el método 'say'
 const rl = createInterface(process.stdin, process.stdout);
 
 export function displayHeader() {
@@ -85,6 +85,5 @@ process.on('warning', (warning) => {
   }
 });
 
-// Si quieres que la función 'start' sea invocada automáticamente:
-start('start.js');
+// Puedes llamar directamente a la función 'start' desde 'index.js'
 
