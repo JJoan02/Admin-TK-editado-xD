@@ -141,7 +141,7 @@ const connectionOptions = {
   logger: P({ level: 'silent' }),
   printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
   mobile: MethodMobile, 
-  browser: opcion == '1' ? ['Admin-TK', 'Safari', '2.0.0'] : methodCodeQR ? ['Admin-TK', 'Safari', '2.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
+  browser: opcion == '1' ? ['Admin-TK', 'Safari', '2.0.0'] : methodCodeQR ? ['Admin-TK', 'Safari', '2.0.0'] : ['Admin-TK', 'Chrome', '110.0.5585.95'],
   auth: {
     creds: state.creds,
     keys: makeCacheableSignalKeyStore(state.keys, P({ level: "fatal" }).child({ level: "fatal" })),
@@ -232,42 +232,6 @@ const connect = async () => {
 };
 
 connect();
-
-
-
-}}  usar un código de emparejamiento con la API móvil')
-
-let numeroTelefono
-if (!!phoneNumber) {
-numeroTelefono = phoneNumber.replace(/[^0-9]/g, '')
-if (!Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
-console.log(chalk.bgBlack(chalk.bold.redBright("Comience con el código de país de su número de WhatsApp.\nEjemplo: 50557865603\n")))
-process.exit(0)
-}} else {
-while (true) {
-numeroTelefono = await question(chalk.bgBlack(chalk.bold.yellowBright('Por favor, escriba su número de WhatsApp.\nEjemplo: 50557865603\n')))
-numeroTelefono = numeroTelefono.replace(/[^0-9]/g, '')
-
-if (numeroTelefono.match(/^\d+$/) && Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
-break 
-} else {
-console.log(chalk.bgBlack(chalk.bold.redBright("Por favor, escriba su número de WhatsApp.\nEjemplo: 573218138672.\n")))
-}}
-rl.close()  
-} 
-
-        setTimeout(async () => {
-            let codigo = await conn.requestPairingCode(numeroTelefono)
-            codigo = codigo?.match(/.{1,4}/g)?.join("-") || codigo
-            //console.log(chalk.yellow('🧊 introduce el código de emparejamiento en WhatsApp.'));
-            console.log(chalk.black(chalk.bgGreen(`👑 CÓDIGO DE VINCULACIÓN 👑`)), chalk.black(chalk.white(codigo)))
-        }, 3000)
-}}
-}
-
-conn.isInit = false;
-conn.well = false;
-conn.logger.info(`🔵  H E C H O\n`)
 
 if (!opts['test']) {
   if (global.db) {
