@@ -1,3 +1,10 @@
 import { useMultiFileAuthState } from '@whiskeysockets/baileys';
 
-export const { state, saveState, saveCreds } = await useMultiFileAuthState('AdminTKSession');
+export let state, saveState, saveCreds;
+
+export async function initAuth() {
+  const auth = await useMultiFileAuthState('AdminTKSession');
+  state = auth.state;
+  saveState = auth.saveState;
+  saveCreds = auth.saveCreds;
+}
