@@ -12,8 +12,8 @@ import moment from 'moment-timezone';
 // *───────────────────────────*
 
 global.owner = [
-   ['51987654321', 'JoanTK 👑', true],
-   ['51987654322', 'Admin-TK', true],
+   ['51927803866', 'JoanTK 👑', true],
+   ['51927803866', 'Admin-TK', true],
 ]
 
 global.mods = []
@@ -23,12 +23,12 @@ global.prems = []
 // *       INFORMACIÓN         *
 // *───────────────────────────*
 
-global.packname = '⪛✰ 𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁 - 𝗠𝗗 ✰⪜'
-global.botname = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 - 𝗠𝗗'
-global.wm = '𝗝𝗼𝗮𝗻𝗧𝗞 𝗕𝗼𝘁 - 𝗠𝗗'
+global.packname = '⪛✰ 𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 ✰⪜'
+global.botname = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞'
+global.wm = '𝗝𝗼𝗮𝗻𝗧𝗞'
 global.author = '𝗝𝗼𝗮𝗻𝗧𝗞'
-global.dev = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁'
-global.textbot = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁 : 𝗝𝗼𝗮𝗻𝗧𝗞'
+global.dev = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞'
+global.textbot = '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 : 𝗝𝗼𝗮𝗻𝗧𝗞'
 global.vs = '1.0.0'
 
 // *───────────────────────────*
@@ -39,7 +39,6 @@ global.imagen1 = fs.readFileSync('./media/AdminTK1.jpg');
 global.imagen2 = fs.readFileSync('./media/AdminTK2.jpg');
 global.imagen3 = fs.readFileSync('./media/AdminTK3.jpg');
 global.welcome = fs.readFileSync('./media/welcomeTK.jpg');
-global.adios = fs.readFileSync('./media/adiosTK.jpg');
 global.catalogo = fs.readFileSync('./media/catalogoTK.jpg');
 global.banner = fs.readFileSync('./media/bannerTK.jpg');
 
@@ -72,9 +71,9 @@ global.estilo = {
             itemCount: -999999, 
             status: 1, 
             surface: 1, 
-            message: '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 𝗕𝗼𝘁 💼', 
+            message: '𝗔𝗱𝗺𝗶𝗻-𝗧𝗞 💼', 
             orderTitle: 'Menu Admin-TK', 
-            thumbnail: catalogo, 
+            thumbnail: global.catalogo, 
             sellerJid: '0@s.whatsapp.net'
         }
     }
