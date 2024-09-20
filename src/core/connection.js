@@ -13,7 +13,7 @@ export async function startConnection() {
 
   conn.ev.on('connection.update', update => {
     if (update.connection === 'open') {
-      console.log('🟢 Conexión establecida');
+      console.log('🟢 Conexión establecida a Admin-TK');
     }
   });
 
