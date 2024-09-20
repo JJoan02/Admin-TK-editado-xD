@@ -1,73 +1,56 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
 import './config.js'
-import { createRequire } from 'module'
-import path, { join } from 'path'
-import { fileURLToPath, pathToFileURL } from 'url'
-import { platform } from 'process'
+import {createRequire} from 'module'
+import path, {join} from 'path'
+import {fileURLToPath, pathToFileURL} from 'url'
+import {platform} from 'process'
 import * as ws from 'ws'
-import { readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch } from 'fs'
+import {readdirSync, statSync, unlinkSync, existsSync, readFileSync, rmSync, watch} from 'fs'
 import yargs from 'yargs';
-import { spawn } from 'child_process'
+import {spawn} from 'child_process'
 import lodash from 'lodash'
 import chalk from 'chalk'
 import syntaxerror from 'syntax-error'
-import { tmpdir } from 'os'
-import { format } from 'util'
+import {tmpdir} from 'os'
+import {format} from 'util'
 import P from 'pino'
-import { Boom } from '@hapi/boom'
-import { makeWASocket, protoType, serialize } from './lib/simple.js'
-import { Low, JSONFile } from 'lowdb'
-import { mongoDB, mongoDBV2 } from './lib/mongoDB.js'
+import pino from 'pino'
+import Pino from 'pino';
+import {Boom} from '@hapi/boom'
+import {makeWASocket, protoType, serialize} from './lib/simple.js'
+import {Low, JSONFile} from 'lowdb'
+import {mongoDB, mongoDBV2} from './lib/mongoDB.js'
 import store from './lib/store.js'
-
-// *───────────────────────────*
-// *       PROPIETARIOS        *
-// *───────────────────────────*
-const { proto } = (await import('@whiskeysockets/baileys')).default
-const { DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC } = await import('@whiskeysockets/baileys')
-
-// *───────────────────────────*
-// *   CONFIGURACIÓN DE RED    *
-// *───────────────────────────*
+const {proto} = (await import('@whiskeysockets/baileys')).default
+const {DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser, PHONENUMBER_MCC} = await import('@whiskeysockets/baileys')
 import readline from 'readline'
 import NodeCache from 'node-cache'
-const { CONNECTING } = ws
-const { chain } = lodash
+const {CONNECTING} = ws
+const {chain} = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
 protoType()
 serialize()
 
-// *───────────────────────────*
-// *    RUTAS Y DIRECTORIOS    *
-// *───────────────────────────*
 global.__filename = function filename(pathURL = import.meta.url, rmPrefix = platform !== 'win32') {
-  return rmPrefix ? /file:\/\//.test(pathURL) ? fileURLToPath(pathURL) : pathURL : pathToFileURL(pathURL).toString();
-}; 
-global.__dirname = function dirname(pathURL) {
+  return rmPrefix ? /file:\/\/\//.test(pathURL) ? fileURLToPath(pathURL) : pathURL : pathToFileURL(pathURL).toString();
+}; global.__dirname = function dirname(pathURL) {
   return path.dirname(global.__filename(pathURL, true))
-}; 
-global.__require = function require(dir = import.meta.url) {
+}; global.__require = function require(dir = import.meta.url) {
   return createRequire(dir)
 }
 
-// *───────────────────────────*
-// *       CONFIGURAR API      *
-// *───────────────────────────*
-global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '');
+global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({...query, ...(apikeyqueryname ? {[apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]} : {})})) : '');
 
-global.timestamp = { start: new Date }
+global.timestamp = {start: new Date}
+
 const __dirname = global.__dirname(import.meta.url)
 
-// *───────────────────────────*
-// *      CARGAR OPCIONES      *
-// *───────────────────────────*
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
 global.prefix = new RegExp('^[' + (opts['prefix'] || '‎z/#$%.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
 
-// *───────────────────────────*
-// *       BASE DE DATOS      *
-// *───────────────────────────*
+// global.opts['db'] = process.env['db']
+
 global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`));
 
 global.DATABASE = global.db 
@@ -95,19 +78,13 @@ global.loadDatabase = async function loadDatabase() {
 }
 loadDatabase()
 
-// *───────────────────────────*
-// *       AUTENTICACIÓN       *
-// *───────────────────────────*
-global.authFile = `AdminTKSession`
-const { state, saveState, saveCreds } = await useMultiFileAuthState(global.authFile)
+global.authFile = `CrowSession`
+const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile)
 const msgRetryCounterMap = (MessageRetryMap) => { };
 const msgRetryCounterCache = new NodeCache()
-const { version } = await fetchLatestBaileysVersion();
+const {version} = await fetchLatestBaileysVersion();
 let phoneNumber = global.botnumber
 
-// *───────────────────────────*
-// *   OPCIONES DE INICIO      *
-// *───────────────────────────*
 const methodCodeQR = process.argv.includes("qr")
 const methodCode = !!phoneNumber || process.argv.includes("code")
 const MethodMobile = process.argv.includes("mobile")
@@ -119,118 +96,81 @@ const question = (texto) => new Promise((resolver) => rl.question(texto, resolve
 
 let opcion
 if (methodCodeQR) {
-  opcion = '1'
+opcion = '1'
 }
 if (!methodCodeQR && !methodCode && !fs.existsSync(`./${authFile}/creds.json`)) {
-  do {
-    opcion = await question(colores('Seleccione una opción:\n') + opcionQR('1. Con código QR\n') + opcionTexto('2. Con código de texto de 8 dígitos\n--> '))
+do {
+opcion = await question(colores('Seleccione una opción:\n') + opcionQR('1. Con código QR\n') + opcionTexto('2. Con código de texto de 8 dígitos\n--> '))
 
-    if (!/^[1-2]$/.test(opcion)) {
-      console.log('Por favor, seleccione solo 1 o 2.\n')
-    }
-  } while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${authFile}/creds.json`))
+if (!/^[1-2]$/.test(opcion)) {
+console.log('Por favor, seleccione solo 1 o 2.\n')
+}} while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${authFile}/creds.json`))
 }
 
-console.info = () => {}
+console.info = () => {} 
 console.debug = () => {} 
-
-// *───────────────────────────*
-// *   CONFIGURAR CONEXIÓN     *
-// *───────────────────────────*
 const connectionOptions = {
-  logger: P({ level: 'silent' }),
-  printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
-  mobile: MethodMobile, 
-  browser: opcion == '1' ? ['Admin-TK', 'Safari', '2.0.0'] : methodCodeQR ? ['Admin-TK', 'Safari', '2.0.0'] : ['Admin-TK', 'Chrome', '110.0.5585.95'],
-  auth: {
-    creds: state.creds,
-    keys: makeCacheableSignalKeyStore(state.keys, P({ level: "fatal" }).child({ level: "fatal" })),
-  },
-  markOnlineOnConnect: true, 
-  generateHighQualityLinkPreview: true, 
-  getMessage: async (clave) => {
-    let jid = jidNormalizedUser(clave.remoteJid)
-    let msg = await store.loadMessage(jid, clave.id)
-    return msg?.message || ""
-  },
-  msgRetryCounterCache,
-  msgRetryCounterMap,
-  defaultQueryTimeoutMs: undefined,   
-  version
+logger: pino({ level: 'silent' }),
+printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
+mobile: MethodMobile, 
+browser: opcion == '1' ? ['CrowBot bot', 'Safari', '2.0.0'] : methodCodeQR ? ['Bot CrowBot', 'Safari', '2.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
+auth: {
+creds: state.creds,
+keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
+},
+markOnlineOnConnect: true, 
+generateHighQualityLinkPreview: true, 
+getMessage: async (clave) => {
+let jid = jidNormalizedUser(clave.remoteJid)
+let msg = await store.loadMessage(jid, clave.id)
+return msg?.message || ""
+},
+msgRetryCounterCache,
+msgRetryCounterMap,
+defaultQueryTimeoutMs: undefined,   
+version
 }
 
-// *───────────────────────────*
-// *  CREAR SOCKET DE WHATSAPP  *
-// *───────────────────────────*
 global.conn = makeWASocket(connectionOptions);
 
 if (!fs.existsSync(`./${authFile}/creds.json`)) {
-  if (opcion === '2' || methodCode) {
+if (opcion === '2' || methodCode) {
 
-    opcion = '2'
-    if (!conn.authState.creds.registered) {  
-      if (MethodMobile) throw new Error('No se puede usar un código de emparejamiento con la API móvil')
+opcion = '2'
+if (!conn.authState.creds.registered) {  
+if (MethodMobile) throw new Error('No se puede usar un código de emparejamiento con la API móvil')
 
-      let numeroTelefono
-      if (!!phoneNumber) {
-        numeroTelefono = phoneNumber.replace(/[^0-9]/g, '')
-        if (!Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
-          console.log(chalk.bgBlack(chalk.bold.redBright("Comience con el código de país de su número de WhatsApp.\nEjemplo: 50557865603\n")))
-          process.exit(0)
-        }
-      } else {
-        while (true) {
-          numeroTelefono = await question(chalk.bgBlack(chalk.bold.yellowBright('Por favor, escriba su número de WhatsApp.\nEjemplo: 50557865603\n')))
-          numeroTelefono = numeroTelefono.replace(/[^0-9]/g, '')
+let numeroTelefono
+if (!!phoneNumber) {
+numeroTelefono = phoneNumber.replace(/[^0-9]/g, '')
+if (!Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
+console.log(chalk.bgBlack(chalk.bold.redBright("Comience con el código de país de su número de WhatsApp.\nEjemplo: 50557865603\n")))
+process.exit(0)
+}} else {
+while (true) {
+numeroTelefono = await question(chalk.bgBlack(chalk.bold.yellowBright('Por favor, escriba su número de WhatsApp.\nEjemplo: 50557865603\n')))
+numeroTelefono = numeroTelefono.replace(/[^0-9]/g, '')
 
-          if (numeroTelefono.match(/^\d+$/) && Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
-            break 
-          } else {
-            console.log(chalk.bgBlack(chalk.bold.redBright("Por favor, escriba su número de WhatsApp.\nEjemplo: 573218138672.\n")))
-          }
-        }
-        rl.close()  
-      } 
+if (numeroTelefono.match(/^\d+$/) && Object.keys(PHONENUMBER_MCC).some(v => numeroTelefono.startsWith(v))) {
+break 
+} else {
+console.log(chalk.bgBlack(chalk.bold.redBright("Por favor, escriba su número de WhatsApp.\nEjemplo: 573218138672.\n")))
+}}
+rl.close()  
+} 
 
-      setTimeout(async () => {
-        let codigo = await conn.requestPairingCode(numeroTelefono)
-        codigo = codigo?.match(/.{1,4}/g)?.join("-") || codigo
-        console.log(chalk.black(chalk.bgGreen(`\nCódigo de emparejamiento: ${codigo}`)));
-        console.log(chalk.black(chalk.bgYellow('Por favor, escanee el código QR con su WhatsApp.')));
-      }, 1000);
-    } else {
-      console.log(chalk.black(chalk.bgRed('Sesión ya registrada.')));
-      process.exit(0);
-    }
-  }
+        setTimeout(async () => {
+            let codigo = await conn.requestPairingCode(numeroTelefono)
+            codigo = codigo?.match(/.{1,4}/g)?.join("-") || codigo
+            //console.log(chalk.yellow('🧊 introduce el código de emparejamiento en WhatsApp.'));
+            console.log(chalk.black(chalk.bgGreen(`👑 CÓDIGO DE VINCULACIÓN 👑`)), chalk.black(chalk.white(codigo)))
+        }, 3000)
+}}
 }
 
-// *───────────────────────────*
-// *   MANTENIMIENTO DE CONEXIÓN*
-// *───────────────────────────*
-conn.ev.on('connection.update', async (update) => {
-  const { connection, lastDisconnect } = update;
-  if (connection === 'close') {
-    const shouldReconnect = (lastDisconnect.error)?.output?.statusCode !== DisconnectReason.loggedOut;
-    console.log('Conexión perdida, reconectando...', shouldReconnect);
-    if (shouldReconnect) {
-      await connect();
-    } else {
-      console.log('Se ha cerrado la sesión.');
-      process.exit(0);
-    }
-  }
-});
-
-// *───────────────────────────*
-// *     INICIO DE SERVICIO     *
-// *───────────────────────────*
-const connect = async () => {
-  console.log('Conectando a WhatsApp...');
-  await conn.connect();
-};
-
-connect();
+conn.isInit = false;
+conn.well = false;
+conn.logger.info(`🔵  H E C H O\n`)
 
 if (!opts['test']) {
   if (global.db) {
