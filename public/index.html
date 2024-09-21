@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vinculación de WhatsApp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    #qr-container {
+      margin-top: 50px;
+    }
+    #qr-code {
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vincula tu WhatsApp</h1>
+  <div id="qr-container">
+    <canvas id="qr-code"></canvas>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('qr', (qrCode) => {
+      const qrCanvas = document.getElementById('qr-code');
+      const context = qrCanvas.getContext('2d');
+      const img = new Image();
+      img.src = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(qrCode);
+      img.onload = () => {
+        context.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+        context.drawImage(img, 0, 0, qrCanvas.width, qrCanvas.height);
+      };
+    });
+  </script>
+</body>
+</html>
