@@ -1,5 +1,5 @@
-import { makeWASocket } from '../lib/simple.js';
-import { state, saveCreds } from './auth.js'; // Autenticación
+import { makeWASocket, makeCacheableSignalKeyStore } from '@adiwajshing/baileys'; // Ajusta si es necesario
+import { state, saveCreds } from './auth.js'; 
 import pino from 'pino';
 
 export async function startConnection() {
@@ -12,7 +12,7 @@ export async function startConnection() {
   });
 
   conn.ev.on('connection.update', update => {
-    console.log('Estado de la conexión:', update);  // Agregar depuración
+    console.log('Estado de la conexión:', update);
     if (update.connection === 'open') {
       console.log('🟢 Conexión establecida a Admin-TK');
     } else if (update.connection === 'close') {
@@ -22,3 +22,4 @@ export async function startConnection() {
 
   conn.ev.on('creds.update', saveCreds);
 }
+
