@@ -26,7 +26,7 @@ export function displayHeader() {
     align: 'center',
     colors: ['red']
   });
-  say('Developed By • JoanTK', {
+  say('Creado por • JoanTK', {
     font: 'console',
     align: 'center',
     colors: ['magenta']
