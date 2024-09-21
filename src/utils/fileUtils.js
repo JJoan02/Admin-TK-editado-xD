@@ -3,7 +3,39 @@
 import fs from 'fs';
 import path from 'path';
 
-// Lee un archivo y devuelve su contenido como texto
+// Función para limpiar archivos temporales
+export function clearTmpFiles() {
+    const tmpDir = path.resolve('./tmp'); // Cambia la ruta si es necesario
+    try {
+        const files = fs.readdirSync(tmpDir);
+        files.forEach(file => {
+            const filePath = path.join(tmpDir, file);
+            fs.unlinkSync(filePath);
+        });
+        console.log('Temporary files cleared.');
+    } catch (err) {
+        console.error(`Error clearing temporary files in ${tmpDir}:`, err);
+        throw err;
+    }
+}
+
+// Función para purgar sesiones
+export function purgeSessions() {
+    const sessionsDir = path.resolve('./sessions'); // Cambia la ruta si es necesario
+    try {
+        const files = fs.readdirSync(sessionsDir);
+        files.forEach(file => {
+            const filePath = path.join(sessionsDir, file);
+            fs.unlinkSync(filePath);
+        });
+        console.log('Sessions purged.');
+    } catch (err) {
+        console.error(`Error purging sessions in ${sessionsDir}:`, err);
+        throw err;
+    }
+}
+
+// El resto de las funciones
 export function readFile(filePath) {
     try {
         const absolutePath = path.resolve(filePath);
@@ -15,7 +47,6 @@ export function readFile(filePath) {
     }
 }
 
-// Escribe contenido en un archivo
 export function writeFile(filePath, data) {
     try {
         const absolutePath = path.resolve(filePath);
@@ -27,7 +58,6 @@ export function writeFile(filePath, data) {
     }
 }
 
-// Elimina un archivo
 export function deleteFile(filePath) {
     try {
         const absolutePath = path.resolve(filePath);
@@ -38,3 +68,4 @@ export function deleteFile(filePath) {
         throw err;
     }
 }
+
