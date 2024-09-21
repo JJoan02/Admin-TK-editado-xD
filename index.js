@@ -5,4 +5,4 @@ console.log(chalk.green('✰ Iniciando Admin-TK ✰'));
 
 // Mostrar el encabezado y luego iniciar el bot
 displayHeader();
-start('start.js');  // Asegúrate de pasar el archivo correcto para iniciar
+start('../../start.js');  // Asegúrate de pasar el archivo correcto para iniciar
