@@ -1,4 +1,4 @@
-import pkg from 'cfonts'; // Importar todo el paquete
+import pkg from 'cfonts';
 import { join } from 'path';
 import { setupMaster, fork } from 'cluster';
 import { watchFile, unwatchFile } from 'fs';
@@ -7,53 +7,51 @@ import yargs from 'yargs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// Definir __dirname para ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const { say } = pkg;  // Extraer el método 'say'
+const { say } = pkg;
 const rl = createInterface(process.stdin, process.stdout);
 
-// Asegúrate de exportar la función displayHeader
 export function displayHeader() {
   say('Admin-TK', {
     font: 'block',
     align: 'center',
-    colors: ['cyan']
+    colors: ['cyan'],
   });
   say('TK-HOST', {
     font: 'chrome',
     align: 'center',
-    colors: ['red']
+    colors: ['red'],
   });
   say('Creado por • JoanTK', {
     font: 'console',
     align: 'center',
-    colors: ['magenta']
+    colors: ['magenta'],
   });
 }
 
-var isRunning = false;
+let isRunning = false;
 
-export function start(file) {  // Asegúrate de exportar la función 'start'
+export function start(file) {
   if (isRunning) return;
   isRunning = true;
-  
-  let args = [join(__dirname, file), ...process.argv.slice(2)];
+
+  const args = [join(__dirname, file), ...process.argv.slice(2)];
   say([process.argv[0], ...args].join(' '), {
     font: 'console',
     align: 'center',
-    colors: ['green']
+    colors: ['green'],
   });
-  
+
   setupMaster({
     exec: args[0],
     args: args.slice(1),
   });
 
-  let p = fork();
-  
-  p.on('message', data => {
+  const p = fork();
+
+  p.on('message', (data) => {
     switch (data) {
       case 'reset':
         p.process.kill();
@@ -77,12 +75,14 @@ export function start(file) {  // Asegúrate de exportar la función 'start'
     });
   });
 
-  let opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
+  const opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
 
   if (!opts['test']) {
-    if (!rl.listenerCount()) rl.on('line', line => {
-      p.emit('message', line.trim());
-    });
+    if (!rl.listenerCount()) {
+      rl.on('line', (line) => {
+        p.emit('message', line.trim());
+      });
+    }
   }
 }
 
@@ -92,4 +92,3 @@ process.on('warning', (warning) => {
     console.warn(warning.stack);
   }
 });
-
