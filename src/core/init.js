@@ -21,7 +21,7 @@ export function displayHeader() {
     align: 'center',
     colors: ['cyan']
   });
-  say('Multi Device', {
+  say('TK-HOST', {
     font: 'chrome',
     align: 'center',
     colors: ['red']
