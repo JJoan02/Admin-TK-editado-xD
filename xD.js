@@ -6,34 +6,39 @@ const isProduction = process.env.NODE_ENV === 'production';
 export const sayAdminTKInfo = () => {
     if (!isProduction) {
         cfonts.say('Admin-TK', {
-            font: 'shade',  // Un poco más grande que 'simple' pero más pequeño que 'block'
+            font: 'block',
             align: 'center',
             colors: ['white'],
-            letterSpacing: 1,  // Ajusta el tamaño
-            lineHeight: 1,  // Controla la altura entre líneas
-            space: false  // Si deseas menos espacio alrededor del texto
+            letterSpacing: 1, // Reduce el espacio entre letras
+            lineHeight: 1, // Controla la altura entre líneas
+            maxLength: '15' // Limita el número máximo de caracteres por línea
         });
         cfonts.say('TK-HOST', {
-            font: 'tiny',  // Más pequeño que Admin-TK pero visible
+            font: 'chrome',
             align: 'center',
             colors: ['red'],
-            letterSpacing: 2  // Mantén un poco de separación para que se vea claro
+            letterSpacing: 1,
+            maxLength: '15'
         });
         cfonts.say('Developed By • JoanTK', {
             font: 'console',
             align: 'center',
-            colors: ['yellow']
+            colors: ['yellow'],
+            letterSpacing: 1,
+            maxLength: '15'
         });
     }
 };
 
-// Definir y exportar la función sayBotInfo
+// Definir y exportar la función sayBotInfo (ajustada también para pantallas pequeñas)
 export const sayBotInfo = () => {
     if (!isProduction) {
         cfonts.say('Admin-TK Bot Info', {
             font: 'console',
             align: 'center',
-            colors: ['cyan']
+            colors: ['cyan'],
+            letterSpacing: 1,
+            maxLength: '15'
         });
     }
 };
@@ -44,7 +49,9 @@ export const sayProcessArgs = (args) => {
         cfonts.say(args.join(' '), {
             font: 'console',
             align: 'center',
-            colors: ['green']
+            colors: ['green'],
+            letterSpacing: 1,
+            maxLength: '15'
         });
     }
 };
