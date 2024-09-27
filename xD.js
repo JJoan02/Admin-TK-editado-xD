@@ -15,12 +15,12 @@ export const sayAdminTKInfo = () => {
             space: false
         });
 
-        // Texto "Bot oficial de" ajustado con fuente simple y clara
+        // Texto "Bot oficial de" ajustado con fuente más pequeña
         cfonts.say('Bot oficial de', {
-            font: 'simple',  // Fuente clara y pequeña
+            font: 'tiny',  // Fuente más pequeña para que encaje bien
             align: 'center',
             colors: ['white'],
-            letterSpacing: 0.5,
+            letterSpacing: 0.3,
             space: false
         });
 
@@ -46,7 +46,7 @@ export const sayAdminTKInfo = () => {
 // Información del bot también ajustada
 export const sayBotInfo = () => {
     if (!isProduction) {
-        cfonts.say('Cargando panel de vinculación', {
+        cfonts.say('Admin-TK Bot Info', {
             font: 'console',
             align: 'center',
             colors: ['cyan'],
