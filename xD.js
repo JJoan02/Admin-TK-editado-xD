@@ -6,18 +6,18 @@ const isProduction = process.env.NODE_ENV === 'production';
 export const sayAdminTKInfo = () => {
     if (!isProduction) {
         cfonts.say('Admin-TK', {
-            font: 'block',  // Puedes cambiar a 'simple' o 'tiny' si aún es muy grande
+            font: 'shade',  // Un poco más grande que 'simple' pero más pequeño que 'block'
             align: 'center',
             colors: ['white'],
-            letterSpacing: 1,  // Ajusta el tamaño del texto, aquí es más pequeño que el original
+            letterSpacing: 1,  // Ajusta el tamaño
             lineHeight: 1,  // Controla la altura entre líneas
             space: false  // Si deseas menos espacio alrededor del texto
         });
         cfonts.say('TK-HOST', {
-            font: 'chrome',  // Mantienes el estilo 'chrome' pero es más pequeño que el de Admin-TK
+            font: 'tiny',  // Más pequeño que Admin-TK pero visible
             align: 'center',
             colors: ['red'],
-            letterSpacing: 2  // Un poco más grande en tamaño que Admin-TK
+            letterSpacing: 2  // Mantén un poco de separación para que se vea claro
         });
         cfonts.say('Developed By • JoanTK', {
             font: 'console',
