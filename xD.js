@@ -6,39 +6,30 @@ const isProduction = process.env.NODE_ENV === 'production';
 export const sayAdminTKInfo = () => {
     if (!isProduction) {
         cfonts.say('Admin-TK', {
-            font: 'block',
+            font: 'chrome',
             align: 'center',
-            colors: ['white'],
-            letterSpacing: 1, // Reduce el espacio entre letras
-            lineHeight: 1, // Controla la altura entre líneas
-            maxLength: '15' // Limita el número máximo de caracteres por línea
+            colors: ['white']
         });
         cfonts.say('TK-HOST', {
             font: 'chrome',
             align: 'center',
-            colors: ['red'],
-            letterSpacing: 1,
-            maxLength: '15'
+            colors: ['red']
         });
         cfonts.say('Developed By • JoanTK', {
             font: 'console',
             align: 'center',
-            colors: ['yellow'],
-            letterSpacing: 1,
-            maxLength: '15'
+            colors: ['yellow']
         });
     }
 };
 
-// Definir y exportar la función sayBotInfo (ajustada también para pantallas pequeñas)
+// Definir y exportar la función sayBotInfo (anteriormente faltaba)
 export const sayBotInfo = () => {
     if (!isProduction) {
         cfonts.say('Admin-TK Bot Info', {
             font: 'console',
             align: 'center',
-            colors: ['cyan'],
-            letterSpacing: 1,
-            maxLength: '15'
+            colors: ['cyan']
         });
     }
 };
@@ -49,9 +40,7 @@ export const sayProcessArgs = (args) => {
         cfonts.say(args.join(' '), {
             font: 'console',
             align: 'center',
-            colors: ['green'],
-            letterSpacing: 1,
-            maxLength: '15'
+            colors: ['green']
         });
     }
 };
@@ -60,3 +49,9 @@ export const sayError = (error) =>
 {
     console.error('⚠️ Error:\n', error);
 };
+
+
+
+Ocupo achicar un poco las letras Admin-TK 
+
+Pero que sea más grande que TK-HOST
